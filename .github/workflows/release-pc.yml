@@ -72,6 +72,10 @@ jobs:
         with:
           install: p7zip mingw-w64-x86_64-lua
 
+      - name: Install rpm build dependencies
+        if: contains( matrix.config.goos, 'linux')
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq rpm
+
       - name: Set up TDM-GCC
         run: msys2 -c "bash siyuan-note/siyuan/scripts/get-tdm-gcc.sh tdm https://github.com/jmeubank/tdm-gcc/releases/download/v10.3.0-tdm-1/tdm-gcc-10.3.0.exe" && echo "CC=${{ github.workspace }}/tdm/bin/gcc.exe" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
         if: contains( matrix.config.goarch, '386')
@@ -128,7 +132,10 @@ jobs:
           GOARCH: ${{ matrix.config.goarch }}
 
       - name: Building Electron
-        run: pnpm run ${{ matrix.config.electron_args }}
+        run: |
+          # 添加 rpm 打包目标
+          sed -i '/- target: "deb"/a\    - target: "rpm"' electron-builder-linux.yml
+          pnpm run ${{ matrix.config.electron_args }}
         working-directory: ${{ github.workspace }}/siyuan-note/siyuan/app
 
       - uses: joutvhu/get-release@v1
@@ -155,6 +162,35 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: ${{ github.workspace }}/siyuan-note/siyuan/app/build/siyuan-*-linux.AppImage
+          allowUpdates: true
+          omitBody: true
+          omitName: true
+          tag: ${{ github.event.inputs.version }}
+          replacesArtifacts: false
+
+      - name: Upload Linux RPM
+        if: contains( matrix.config.goos, 'linux')
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: ${{ github.workspace }}/siyuan-note/siyuan/app/build/siyuan-*-linux.rpm
+          allowUpdates: true
+          omitBody: true
+          omitName: true
+          tag: ${{ github.event.inputs.version }}
+          replacesArtifacts: false
+
+      - name: Pack npm tarball
+        if: contains( matrix.config.goos, 'linux')
+        run: npm pack
+        working-directory: ${{ github.workspace }}/siyuan-note/siyuan/app
+
+      - name: Upload npm tarball
+        if: contains( matrix.config.goos, 'linux')
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: ${{ github.workspace }}/siyuan-note/siyuan/app/siyuan-*.tgz
           allowUpdates: true
           omitBody: true
           omitName: true
