@@ -183,20 +183,3 @@ jobs:
           omitName: true
           tag: ${{ github.event.inputs.version }}
           replacesArtifacts: false
-
-      - name: Pack npm tarball
-        if: contains( matrix.config.goos, 'linux')
-        run: npm pack
-        working-directory: ${{ github.workspace }}/siyuan-note/siyuan/app
-
-      - name: Upload npm tarball
-        if: contains( matrix.config.goos, 'linux')
-        uses: ncipollo/release-action@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: ${{ github.workspace }}/siyuan-note/siyuan/app/siyuan-*.tgz
-          allowUpdates: true
-          omitBody: true
-          omitName: true
-          tag: ${{ github.event.inputs.version }}
-          replacesArtifacts: false
