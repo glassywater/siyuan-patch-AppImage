@@ -148,3 +148,15 @@ jobs:
           omitName: true
           tag: ${{ github.event.inputs.version }}
           replacesArtifacts: false
+
+      - name: Upload Linux AppImage
+        if: contains( matrix.config.goos, 'linux')
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: ${{ github.workspace }}/siyuan-note/siyuan/app/build/siyuan-*-linux.AppImage
+          allowUpdates: true
+          omitBody: true
+          omitName: true
+          tag: ${{ github.event.inputs.version }}
+          replacesArtifacts: false
