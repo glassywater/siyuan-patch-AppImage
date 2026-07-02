@@ -94,10 +94,7 @@ jobs:
           GOARCH: ${{ matrix.config.goarch }}
 
       - name: Building Electron
-        run: |
-          # 添加 rpm 打包目标
-          sed -i '/- target: "deb"/a\    - target: "rpm"' electron-builder-linux.yml
-          pnpm run ${{ matrix.config.electron_args }}
+        run: pnpm run ${{ matrix.config.electron_args }}
         working-directory: ${{ github.workspace }}/siyuan-note/siyuan/app
 
       - uses: joutvhu/get-release@v1
