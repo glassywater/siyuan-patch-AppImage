@@ -21,7 +21,7 @@ jobs:
             target: "ios"
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
         with:
           path: siyuan-note
 
@@ -61,7 +61,7 @@ jobs:
       - run: go version
 
       - name: Set up Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v4
         with:
           node-version: 24
 
