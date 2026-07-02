@@ -116,7 +116,7 @@ jobs:
           omitBody: true
           omitName: true
           tag: ${{ github.event.inputs.version }}
-          replacesArtifacts: false
+          replacesArtifacts: true
 
       - name: Upload Linux AppImage
         if: contains( matrix.config.goos, 'linux')
@@ -128,7 +128,7 @@ jobs:
           omitBody: true
           omitName: true
           tag: ${{ github.event.inputs.version }}
-          replacesArtifacts: false
+          replacesArtifacts: true
 
       - name: Upload Linux RPM
         if: contains( matrix.config.goos, 'linux')
@@ -140,4 +140,4 @@ jobs:
           omitBody: true
           omitName: true
           tag: ${{ github.event.inputs.version }}
-          replacesArtifacts: false
+          replacesArtifacts: true
