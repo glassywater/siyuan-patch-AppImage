@@ -1,5 +1,7 @@
 # siyuan patch [思源笔记](https://github.com/siyuan-note/siyuan)本地VIP
 
+**Prerequisites:** pnpm 11.9.0
+
 ## 修改了哪些内容
 
 1. 本地VIP(即官方的 [`功能特性`](https://b3log.org/siyuan/pricing.html)), 可以使用
