@@ -1,6 +1,6 @@
 # siyuan patch [思源笔记](https://github.com/siyuan-note/siyuan)本地VIP
 
-**Prerequisites:** pnpm 11.9.0
+**Prerequisites:** pnpm@11.12.0
 
 ## 修改了哪些内容
 
